@@ -1,0 +1,9 @@
+node_modules/
+*.data.json
+/project*/
+.env
+data/
+
+*.log
+
+./Rocket.Chat/
