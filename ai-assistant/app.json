@@ -1,16 +1,16 @@
 {
-    "id": "462e441b-cacb-4541-9ba1-2b875873b13c",
+    "id": "eec3e96e-8b7b-4235-aa6c-feee3cb64200",
     "version": "0.0.1",
     "requiredApiVersion": "^1.19.0",
     "iconFile": "icon.png",
     "author": {
         "name": "Prisha Gupta",
-        "homepage": "https://preeesha.github.io/",
-        "support": "https://github.com/preeesha/rocket-chatter-app"
+        "homepage": "https://google.com",
+        "support": "https://google.com"
     },
-    "name": "AI-Assistant",
-    "nameSlug": "ai-assistant",
-    "classFile": "AiAssistantApp.ts",
-    "description": "AI Assistant for understanding rocket chats core repository",
+    "name": "Rocket Chatter",
+    "nameSlug": "rocketchatter",
+    "classFile": "src/RocketChatterApp.ts",
+    "description": "Rocket Chatter app",
     "implements": []
 }

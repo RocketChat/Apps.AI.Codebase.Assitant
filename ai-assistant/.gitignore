@@ -1,3 +1,5 @@
+metadata.yml
+
 # ignore modules pulled in from npm
 node_modules/
 

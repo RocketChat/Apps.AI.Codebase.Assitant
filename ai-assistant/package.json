@@ -1,8 +1,14 @@
 {
+    "scripts": {
+        "rc-deploy": "rc-apps deploy --url http://localhost:3000 -u prisha.gupta -p 12345678"
+    },
     "devDependencies": {
         "@rocket.chat/apps-engine": "^1.19.0",
         "@types/node": "14.14.6",
         "tslint": "^5.10.0",
         "typescript": "^4.0.5"
+    },
+    "dependencies": {
+        "esbuild": "^0.19.4"
     }
 }

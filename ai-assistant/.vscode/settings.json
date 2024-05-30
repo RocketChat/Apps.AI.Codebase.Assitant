@@ -1,0 +1,10 @@
+{
+    "editor.tabSize": 4,
+    "editor.detectIndentation": false,
+    "editor.insertSpaces": true,
+    "explorer.fileNesting.enabled": true,
+    "explorer.fileNesting.expand": false,
+    "explorer.fileNesting.patterns": {
+        "package.json": ".gitignore, *.json, *.yml, *.yaml, bun.lockb, .editorconfig, .rcapps*"
+    }
+}
