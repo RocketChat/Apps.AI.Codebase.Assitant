@@ -80,7 +80,7 @@ namespace Algorithms {
 
 		// Establish relations between nodes
 		if ((node as any).findReferencesAsNodes) {
-			(node as RefNode).findReferencesAsNodes().forEach((ref) => {
+			;(node as RefNode).findReferencesAsNodes().forEach((ref) => {
 				switch (ref.getKind()) {
 					case ts.SyntaxKind.ArrowFunction:
 					case ts.SyntaxKind.FunctionDeclaration:
@@ -193,7 +193,7 @@ export async function prepareCodebase(
 	// create directory named "data"
 	const dataFolder = "data"
 	if (startFrom === 0 && existsSync(dataFolder)) {
-		rmSync(dataFolder, { recursive: true })	
+		rmSync(dataFolder, { recursive: true })
 	}
 	mkdirSync(dataFolder)
 	///
