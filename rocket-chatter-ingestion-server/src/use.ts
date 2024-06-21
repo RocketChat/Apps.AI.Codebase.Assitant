@@ -19,7 +19,7 @@ async function main() {
 		 * Keep it 1 for low memory usage and hence no crashes.
 		 * Higher batch size might cause the program to get stuck and eventually crash.
 		 */
-		const batchSize = 50
+		const batchSize = 8
 		await prepareCodebase(DIR.at(-1)!, batchSize)
 		for (const t of notFoundKindNames) {
 			console.log(t)

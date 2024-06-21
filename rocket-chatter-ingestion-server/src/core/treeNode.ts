@@ -42,8 +42,8 @@ export class TreeNode {
          case ts.SyntaxKind.ModuleDeclaration:
          case ts.SyntaxKind.TypeAliasDeclaration:
          case ts.SyntaxKind.VariableDeclaration:
-         // case ts.SyntaxKind.VariableDeclarationList:
          case ts.SyntaxKind.PropertyDeclaration:
+         case ts.SyntaxKind.TypeParameter:
          case ts.SyntaxKind.Identifier:
          case ts.SyntaxKind.Parameter:
             return this.node.getSymbol()?.getName() ?? ""

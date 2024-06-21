@@ -192,13 +192,13 @@ export async function prepareCodebase(
 	/// cleanup process
 	// create directory named "data"
 	const dataFolder = "data"
-	if (startFrom === 0 && existsSync(dataFolder)) {
+	if (existsSync(dataFolder)) {
 		rmSync(dataFolder, { recursive: true })	
 	}
 	mkdirSync(dataFolder)
 	///
 
-	let nBatches = startFrom
+	let nBatches = 0
 	let nodesProcessed = 0
 	let nOutputFilesProcessed = 0
 	while (nBatches * batchSize < startFrom + files.length) {
