@@ -1,14 +1,15 @@
 import { insertStyleguides } from "./core/styleguides"
+import { notFoundKindNames } from "./core/treeNode"
 import { insertDataIntoDB } from "./ingestion/ingest"
 import { prepareCodebase, prepareNodesEmbeddings } from "./ingestion/prepare"
 
 const DIR = [
 	//
 	// "./project",
-	"./Rocket.Chat", // clone the repo first
 	"./florence-backend",
 	"long",
-	"rippledb"
+	"rippledb",
+	"./Rocket.Chat", // clone the repo first
 ]
 
 async function main() {
@@ -20,9 +21,12 @@ async function main() {
 		 */
 		const batchSize = 50
 		await prepareCodebase(DIR.at(-1)!, batchSize)
-		await prepareNodesEmbeddings("data", batchSize)
+		for (const t of notFoundKindNames) {
+			console.log(t)
+		}
+		// await prepareNodesEmbeddings("data", batchSize)
 
-		await insertDataIntoDB(batchSize)
+		// await insertDataIntoDB(batchSize)
 		// await insertStyleguides()
 	}
 	const endTime = Date.now()
