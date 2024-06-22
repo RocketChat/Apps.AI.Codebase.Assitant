@@ -93,7 +93,7 @@ export class Codebase {
 	 * @returns Promise<void>
 	 */
 	async process(): Promise<void> {
-		console.log("🕒 Preparing Nodes")
+		console.log("🕒 Preparing Nodes\n")
 
 		let nodesProcessed = 0
 		for (const [index, batch] of this._batches.entries()) {
