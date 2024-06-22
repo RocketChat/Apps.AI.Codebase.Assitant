@@ -1,11 +1,20 @@
-import { SourceFile as TSMorphSourceFile } from "ts-morph"
+import { readFileSync } from "fs"
 import { DBNode } from "../core/dbNode"
 import { ISourceFile } from "./sourceFile.types"
 
 export class SourceFile implements ISourceFile {
-	async process(nodesRef: Record<string, DBNode>): Promise<void> {}
+	private _path: string
 
-	static fromTSMorphSourceFile(sourceFile: TSMorphSourceFile): SourceFile {
-		return new SourceFile()
+	constructor(path: string) {
+		this._path = path
+	}
+
+	readFile(): string {
+		const content = readFileSync(this._path, "utf-8")
+		return content
+	}
+
+	async process(nodesRef: Record<string, DBNode>): Promise<void> {
+		console.log(this.readFile())
 	}
 }

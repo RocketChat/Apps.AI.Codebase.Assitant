@@ -1,5 +1,5 @@
 import { mkdirSync, rmSync, writeFileSync } from "fs"
-import { Project } from "ts-morph"
+import { glob } from "glob"
 import { DBNode } from "../core/dbNode"
 import { SourceFile } from "./sourceFile"
 import { ISourceFile } from "./sourceFile.types"
@@ -45,12 +45,18 @@ export class Codebase {
 	}
 
 	private prepareFilesMetadata() {
-		const project = new Project()
-		project.addSourceFilesAtPaths(this.makePath("**/*.ts")) // glob patterns
+		const extensions = ["ts", "tsx", "js", "jsx"]
+		console.log(
+			`🕒 Preparing Files Metadata for *${extensions.join(", *")} files`
+		)
 
-		this._files = project
-			.getSourceFiles()
-			.map((x) => SourceFile.fromTSMorphSourceFile(x))
+		const globPatterns = extensions.map((x) => `**/*.${x}`)
+		for (const pattern of globPatterns) {
+			const files = glob
+				.sync(this.makePath(pattern))
+				.map((x) => new SourceFile(x))
+			this._files.push(...files)
+		}
 	}
 
 	private makeFilesBatches() {
