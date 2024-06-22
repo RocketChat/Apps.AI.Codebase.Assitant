@@ -8,7 +8,7 @@ export class SourceFile implements ISourceFile {
 		this._path = path
 	}
 
-	readFile(): string {
+	read(): string {
 		const content = readFileSync(this._path, "utf-8")
 		return content
 	}

@@ -12,5 +12,5 @@ export enum SourceFileType {
 }
 
 export interface ISourceFile {
-	readFile(): string
+	read(): string
 }

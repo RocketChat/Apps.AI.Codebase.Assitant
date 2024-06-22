@@ -1,13 +1,13 @@
-import { insertDataIntoDB } from "./process/ingest/ingest"
-import { prepareCodebase, prepareNodesEmbeddings } from "./process/prepare"
+import { Codebase } from "./process/prepare/codebase"
+import { FileProcessor } from "./process/prepare/fileProcessor"
 
 const DIR = [
 	//
-	// "./project",
 	"./Rocket.Chat", // clone the repo first
 	"./florence-backend",
 	"long",
 	"rippledb",
+	"./project",
 ]
 
 async function main() {
@@ -17,11 +17,11 @@ async function main() {
 		 * Keep it 1 for low memory usage and hence no crashes.
 		 * Higher batch size might cause the program to get stuck and eventually crash.
 		 */
-		const batchSize = 50
-		await prepareCodebase(DIR.at(-1)!, batchSize)
-		await prepareNodesEmbeddings("data", batchSize)
+		const codebase = new Codebase(DIR.at(-1)!, new FileProcessor(), 1)
+		codebase.process()
 
-		await insertDataIntoDB(batchSize)
+		// await prepareNodesEmbeddings("data", batchSize)
+		// await insertDataIntoDB(batchSize)
 		// await insertStyleguides()
 	}
 	const endTime = Date.now()
