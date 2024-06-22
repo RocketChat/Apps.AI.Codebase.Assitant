@@ -1,6 +1,7 @@
 import { mkdirSync, rmSync, writeFileSync } from "fs"
 import { glob } from "glob"
 import { DBNode } from "../core/dbNode"
+import { IFileProcessor } from "./fileProcessor.types"
 import { SourceFile } from "./sourceFile"
 import { ISourceFile } from "./sourceFile.types"
 
@@ -8,16 +9,19 @@ export class Codebase {
 	public _path: string
 	private _dataPath: string
 	private _batchSize: number
+	private _fileProcessor: IFileProcessor
+
 	private _files: ISourceFile[] = []
 	private _batches: number[][] = []
 
-	constructor(path: string, batchSize = 50) {
+	constructor(path: string, fileProcessor: IFileProcessor, batchSize = 50) {
 		// If path ends with any number of /, remove them
 		if (path.endsWith("/")) path = path.replace(/\/+$/, "")
 
 		this._path = path
 		this._dataPath = ""
 		this._batchSize = batchSize
+		this._fileProcessor = fileProcessor
 
 		this.initializeDataDirectory()
 		this.prepareFilesMetadata()
@@ -100,34 +104,50 @@ export class Codebase {
 
 		let nodesProcessed = 0
 		for (const [index, batch] of this._batches.entries()) {
-			const [startFrom, endAt] = batch
-			const files = this._files.slice(startFrom, endAt)
-
-			console.log(`🕒 Processing ${startFrom}-${endAt} files`)
-			{
-				let nodes: Record<string, DBNode> = {}
-
-				/* Step 1 */
-				try {
-					const jobs = files.map((x) => x.process(nodes))
-					await Promise.all(jobs)
-				} catch {
-					console.error(`Error in processing ${startFrom}-${endAt} files`)
-				}
-
-				/* Step 2 */
-				for (let i = 0; i < Object.keys(nodes).length; i += this._batchSize) {
-					const [start, end] = [i, i + this._batchSize]
-					this.writeNodesRangeToFile(nodes, `batch-${index}.json`, start, end)
-				}
-
-				nodesProcessed += Object.keys(nodes).length
-			}
-			console.log(`✅ Processed ${startFrom}-${endAt} files\n`)
+			const [start, end] = batch
+			nodesProcessed += await this.processFilesBatch(index, start, end)
 		}
 
 		console.log(`✅ Prepared ${nodesProcessed} nodes`)
 	}
 
-	processFilesBatch(files: SourceFile[]) {}
+	async processFilesBatch(
+		batchNumber: number,
+		start: number,
+		end: number
+	): Promise<number> {
+		let nNodesProcessed = 0
+
+		console.log(`🕒 Processing ${start}-${end} files`)
+		{
+			let nodes: Record<string, DBNode> = {}
+
+			/* Step 1 */
+			try {
+				const files = this._files.slice(start, end)
+				const jobs = files.map((x) => this._fileProcessor.process(x, nodes))
+				await Promise.all(jobs)
+			} catch {
+				console.error(`Error in processing ${start}-${end} files`)
+			}
+
+			/* Step 2 */
+			for (let i = 0; i < Object.keys(nodes).length; i += this._batchSize) {
+				const [start, end] = [i, i + this._batchSize]
+				this.writeNodesRangeToFile(
+					nodes,
+					`batch-${batchNumber}.json`,
+					start,
+					end
+				)
+			}
+
+			nNodesProcessed = Object.keys(nodes).length
+		}
+		console.log(
+			`✅ Processed ${start}-${end} files (${nNodesProcessed} nodes)\n`
+		)
+
+		return nNodesProcessed
+	}
 }
