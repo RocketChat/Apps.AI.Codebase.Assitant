@@ -2,8 +2,8 @@ import cliProgress from "cli-progress"
 import { readdirSync } from "fs"
 import { readFile } from "fs/promises"
 import { Transaction } from "neo4j-driver"
-import { DBNode } from "../core/dbNode"
-import { db, verifyConnectivity } from "../core/neo4j"
+import { DBNode } from "../../core/dbNode"
+import { db, verifyConnectivity } from "../../core/neo4j"
 
 namespace Helpers {
 	export function prepareProgressBar(total: number) {

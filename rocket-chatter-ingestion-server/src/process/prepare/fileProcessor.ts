@@ -1,4 +1,4 @@
-import { DBNode } from "../core/dbNode"
+import { DBNode } from "../../core/dbNode"
 import { IFileProcessor } from "./fileProcessor.types"
 import { ISourceFile } from "./sourceFile.types"
 

@@ -1,6 +1,5 @@
-import { insertStyleguides } from "./core/styleguides"
-import { insertDataIntoDB } from "./ingestion/ingest"
-import { prepareCodebase, prepareNodesEmbeddings } from "./ingestion/prepare"
+import { insertDataIntoDB } from "./process/ingest/ingest"
+import { prepareCodebase, prepareNodesEmbeddings } from "./process/prepare"
 
 const DIR = [
 	//
@@ -8,7 +7,7 @@ const DIR = [
 	"./Rocket.Chat", // clone the repo first
 	"./florence-backend",
 	"long",
-	"rippledb"
+	"rippledb",
 ]
 
 async function main() {
