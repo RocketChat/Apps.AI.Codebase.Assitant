@@ -1,4 +1,4 @@
-import { mkdirSync, rmSync, writeFileSync } from "fs"
+import { existsSync, mkdirSync, rmSync, writeFileSync } from "fs"
 import { glob } from "glob"
 import { DBNode } from "../../core/dbNode"
 import { IFileProcessor } from "./fileProcessor.types"
@@ -6,7 +6,7 @@ import { SourceFile } from "./sourceFile"
 import { ISourceFile } from "./sourceFile.types"
 
 export class Codebase {
-	public _path: string
+	private _path: string
 	private _dataPath: string
 	private _batchSize: number
 	private _fileProcessor: IFileProcessor
@@ -28,39 +28,32 @@ export class Codebase {
 		this.makeFilesBatches()
 	}
 
-	public get path() {
-		return this._path
-	}
-
-	public get batchSize() {
-		return this._batchSize
-	}
-
 	private makePath(path: string): string {
 		return `${this._path}/${path}`
 	}
 
-	private initializeDataDirectory(removeExisting = false): void {
+	private initializeDataDirectory(removeExisting = true): void {
 		this._dataPath = "data"
 
 		const path = this.makePath(this._dataPath)
-		if (removeExisting) rmSync(path, { recursive: true })
+		if (removeExisting && existsSync(path)) rmSync(path, { recursive: true })
 		mkdirSync(path)
 	}
 
 	private prepareFilesMetadata() {
 		const extensions = ["ts", "tsx", "js", "jsx"]
-		console.log(
-			`🕒 Preparing Files Metadata for *${extensions.join(", *")} files`
-		)
 
-		const globPatterns = extensions.map((x) => `**/*.${x}`)
-		for (const pattern of globPatterns) {
-			const files = glob
-				.sync(this.makePath(pattern))
-				.map((x) => new SourceFile(x))
-			this._files.push(...files)
+		console.log(`🕒 Preparing metadata for files: *.${extensions.join(", *.")}`)
+		{
+			const globPatterns = extensions.map((x) => `**/*.${x}`)
+			for (const pattern of globPatterns) {
+				const files = glob
+					.sync(this.makePath(pattern))
+					.map((x) => new SourceFile(x))
+				this._files.push(...files)
+			}
 		}
+		console.log(`✅ Prepared metadata for ${this._files.length} files\n`)
 	}
 
 	private makeFilesBatches() {
@@ -111,7 +104,7 @@ export class Codebase {
 		console.log(`✅ Prepared ${nodesProcessed} nodes`)
 	}
 
-	async processFilesBatch(
+	private async processFilesBatch(
 		batchNumber: number,
 		start: number,
 		end: number
