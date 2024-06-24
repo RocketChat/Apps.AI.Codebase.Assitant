@@ -10,7 +10,6 @@ export namespace Interface {
 			"Interface",
 			(n.body as any).body.map((e: any) => print(e).code).join("\n")
 		)
-		if (node.name !== "Calculate") return
 
 		// Check for extensions
 		for (const e of n.extends) {

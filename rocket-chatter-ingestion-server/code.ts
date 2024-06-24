@@ -3,6 +3,27 @@ interface Calculate {
 	(x: TreeNode<TreeNode<Student>>, y: Status): A
 }
 
+interface Printable {
+	print(): void
+}
+
+interface Loggable {
+	log(): void
+}
+
+type Logger = Printable & Loggable
+
+class ConsoleLogger implements Logger {
+	print() {
+		console.log("Printing...")
+	}
+
+	log() {
+		console.log("Logging...")
+	}
+}
+
+
 interface TreeNode<T> {
 	value: T
 	v: A
