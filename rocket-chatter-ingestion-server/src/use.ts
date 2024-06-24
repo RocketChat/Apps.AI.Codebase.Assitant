@@ -147,6 +147,7 @@ namespace Handlers {
 		console.log("========================================\n")
 		console.log("Function:", n.id?.name)
 
+		// Handle type annotations
 		if (n.returnType?.typeAnnotation) {
 			const type = n.returnType.typeAnnotation
 			if (namedTypes.TSTypeReference.check(type)) {
@@ -159,6 +160,7 @@ namespace Handlers {
 			})
 		}
 
+		// Handle parameters to see if any of them uses an external entity
 		for (const p of n.params) {
 			if (namedTypes.Identifier.check(p)) {
 				const name = (p.typeAnnotation?.typeAnnotation as any)?.typeName?.name
@@ -170,6 +172,7 @@ namespace Handlers {
 			}
 		}
 
+		// Handle the body of the function
 		for (const c of n.body.body) {
 			if (namedTypes.ExpressionStatement.check(c)) {
 				// For direct calls
@@ -182,7 +185,9 @@ namespace Handlers {
 						...flattenCallExpression(c.expression)
 					)
 				}
-			} else if (namedTypes.VariableDeclaration.check(c)) {
+			}
+			// For variable declarations
+			else if (namedTypes.VariableDeclaration.check(c)) {
 				// For variable declarations
 				for (const d of c.declarations) {
 					if (namedTypes.VariableDeclarator.check(d)) {
@@ -195,7 +200,9 @@ namespace Handlers {
 								},
 								...flattenCallExpression(d.init)
 							)
-						} else if (namedTypes.NewExpression.check(d.init)) {
+						}
+						// For variables declared using new expressions
+						else if (namedTypes.NewExpression.check(d.init)) {
 							if (namedTypes.Identifier.check(d.init.callee)) {
 								node.pushUse({
 									name: d.init.callee.name,
@@ -203,7 +210,9 @@ namespace Handlers {
 								})
 							}
 							node.pushUse(...flattenNewExpression(d.init))
-						} else if (namedTypes.Identifier.check(d.init)) {
+						}
+						// For variables declared using other variables or direct values
+						else if (namedTypes.Identifier.check(d.init)) {
 							node.pushUse({
 								name: d.init.name,
 								type: "variable",
