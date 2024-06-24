@@ -4,14 +4,16 @@ export namespace TypeArgument {
 	export function flatten(
 		args: namedTypes.TypeParameterInstantiation["params"]
 	) {
-		const typeArguments: string[] = []
+		const typeArguments = new Set<string>()
 
 		for (const t of args) {
 			if (namedTypes.TSTypeReference.check(t)) {
-				typeArguments.push((t as any).typeName.name)
+				typeArguments.add((t as any).typeName.name)
 
 				if ((t as any).typeArguments) {
-					typeArguments.push(...flatten((t as any).typeArguments.params))
+					flatten((t as any).typeArguments.params).forEach((x) =>
+						typeArguments.add(x)
+					)
 				}
 			}
 		}
