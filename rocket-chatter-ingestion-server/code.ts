@@ -1,4 +1,7 @@
 interface A {}
+interface Calculate {
+	(x: number, y: number): A
+}
 
 interface TreeNode<T> {
 	value: T

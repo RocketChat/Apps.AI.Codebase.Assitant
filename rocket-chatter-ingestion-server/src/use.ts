@@ -239,7 +239,7 @@ namespace Handlers {
 			"Interface",
 			(n.body as any).body.map((e: any) => print(e).code).join("\n")
 		)
-		if (node.name !== "TreeNode") return
+		if (node.name !== "Calculate") return
 
 		// Check for extensions
 		for (const e of n.extends) {
@@ -266,8 +266,11 @@ namespace Handlers {
 
 		// Check for external references
 		for (const m of (n.body as any).body) {
-			// Check for type references (classes, enums, interfaces etc...)
-			if (namedTypes.TSPropertySignature.check(m)) {
+			// Check for type references & index signatures (classes, enums, interfaces etc...)
+			if (
+				namedTypes.TSPropertySignature.check(m) ||
+				namedTypes.TSTypeReference.check(m.typeAnnotation?.typeAnnotation)
+			) {
 				if (
 					namedTypes.TSTypeReference.check(m.typeAnnotation?.typeAnnotation)
 				) {
