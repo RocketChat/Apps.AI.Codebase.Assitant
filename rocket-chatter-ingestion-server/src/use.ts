@@ -230,7 +230,7 @@ namespace Handlers {
 			"Interface",
 			(n.body as any).body.map((e: any) => print(e).code).join("\n")
 		)
-		if (node.name !== "Thing") return
+		if (node.name !== "TreeNode") return
 
 		// Check for extensions
 		for (const e of n.extends) {
@@ -249,6 +249,12 @@ namespace Handlers {
 			)
 		}
 
+		// Check for type parameters
+		const typeParameters: string[] = []
+		for (const p of n.typeParameters?.params ?? []) {
+			typeParameters.push((p.name as any).name)
+		}
+
 		// Check for external references
 		for (const m of (n.body as any).body) {
 			// Check for type references (classes, enums, interfaces etc...)
@@ -256,10 +262,12 @@ namespace Handlers {
 				if (
 					namedTypes.TSTypeReference.check(m.typeAnnotation?.typeAnnotation)
 				) {
-					const type = (m.typeAnnotation?.typeAnnotation as any).typeName.name
+					const name = (m.typeAnnotation?.typeAnnotation as any).typeName.name
+					if (!name) continue
+					if (typeParameters.includes(name)) continue
 					node.pushUse({
-						name: type,
-						type: "enum",
+						name: name,
+						type: "type",
 					})
 				}
 			}

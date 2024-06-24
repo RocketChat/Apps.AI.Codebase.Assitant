@@ -1,3 +1,11 @@
+interface A {}
+
+interface TreeNode<T> {
+	value: T
+	v: A
+	children: TreeNode<T>[]
+}
+
 enum Status {}
 
 class Student {}
