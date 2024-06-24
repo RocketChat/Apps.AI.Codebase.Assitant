@@ -1,6 +1,6 @@
 interface A {}
 interface Calculate {
-	(x: number, y: number): A
+	(x: TreeNode<TreeNode<Student>>, y: Status): A
 }
 
 interface TreeNode<T> {
