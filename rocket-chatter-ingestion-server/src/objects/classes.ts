@@ -1,6 +1,6 @@
 import { namedTypes } from "ast-types"
 import { Functions } from "./functions"
-import { TypeArguments } from "./typeArguments"
+import { TypeArgument } from "./typeArgument"
 
 export namespace Classes {
 	export function flattenNewExpression(node: namedTypes.NewExpression) {
@@ -31,7 +31,7 @@ export namespace Classes {
 		}
 
 		if (node.typeArguments) {
-			const types = TypeArguments.flatten(node.typeArguments?.params ?? [])
+			const types = TypeArgument.flatten(node.typeArguments?.params ?? [])
 			for (const t of types) {
 				uses.push({
 					name: t,

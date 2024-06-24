@@ -2,7 +2,7 @@ import { namedTypes } from "ast-types"
 import { print } from "recast"
 import { Classes } from "./classes"
 import { DBNode } from "./dbNode"
-import { TypeArguments } from "./typeArguments"
+import { TypeArgument } from "./typeArgument"
 
 export namespace Functions {
 	export function Handle(n: namedTypes.FunctionDeclaration) {
@@ -12,15 +12,9 @@ export namespace Functions {
 			n.body.body.map((e) => print(e).code).join("\n")
 		)
 
-		console.log("========================================\n")
-		console.log("Function:", n.id?.name)
-
 		// Handle type annotations
 		if (n.returnType?.typeAnnotation) {
 			const type = n.returnType.typeAnnotation
-			if (namedTypes.TSTypeReference.check(type)) {
-				console.log("Unknown return type:", type)
-			}
 			const returnType = (n.returnType.typeAnnotation as any).typeName.name
 			node.pushUse({
 				name: returnType,
@@ -93,12 +87,6 @@ export namespace Functions {
 				}
 			}
 		}
-
-		console.log("\n========================================")
-
-		if (node.name == "Log") {
-			console.log(node)
-		}
 	}
 
 	export function flattenCallExpression(node: namedTypes.CallExpression) {
@@ -109,8 +97,6 @@ export namespace Functions {
 				name: node.callee.name,
 				type: "function",
 			})
-		} else {
-			// console.log("Unknown call:", e.expression)
 		}
 
 		if (node.arguments) {
@@ -129,7 +115,7 @@ export namespace Functions {
 		}
 
 		if (node.typeArguments) {
-			const types = TypeArguments.flatten(node.typeArguments?.params ?? [])
+			const types = TypeArgument.flatten(node.typeArguments?.params ?? [])
 			for (const t of types) {
 				uses.push({
 					name: t,
