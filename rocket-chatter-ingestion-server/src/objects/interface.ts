@@ -1,7 +1,8 @@
 import { namedTypes } from "ast-types"
 import { print } from "recast"
 import { DBNode } from "./dbNode"
-import { TypeArguments } from "./typeArguments"
+import { TypeAnnotation } from "./typeAnnotation"
+import { TypeArgument } from "./typeArgument"
 
 export namespace Interface {
 	export function Handle(n: namedTypes.InterfaceDeclaration) {
@@ -11,72 +12,71 @@ export namespace Interface {
 			(n.body as any).body.map((e: any) => print(e).code).join("\n")
 		)
 
-		// Check for extensions
-		for (const e of n.extends) {
-			if (!(e as any).typeArguments) continue
-
-			const params = (e as any).typeArguments?.params ?? []
-			node.pushUse(
-				{
-					name: (e as any).expression.name,
-					type: "type",
-				},
-				...TypeArguments.flatten(params).map((t) => ({
-					name: t,
-					type: "type",
-				}))
-			)
-		}
-
 		// Check for type parameters
 		const typeParameters: string[] = []
 		for (const p of n.typeParameters?.params ?? []) {
 			typeParameters.push((p.name as any).name)
 		}
 
+		// Check for extensions
+		for (const e of n.extends) {
+			const name = (e as any).expression.name
+			if (typeParameters.includes(name)) continue
+
+			node.pushUse({
+				name: name,
+				type: "type",
+			})
+
+			const params = (e as any).typeArguments?.params ?? []
+			node.pushUse(
+				...TypeArgument.flatten(params)
+					.map((t) => ({
+						name: t,
+						type: "type",
+					}))
+					.filter((t) => !typeParameters.includes(t.name))
+			)
+		}
+
 		// Check for external references
 		for (const m of (n.body as any).body) {
 			// Check for type references & index signatures (classes, enums, interfaces etc...)
-			if (
-				namedTypes.TSPropertySignature.check(m) ||
-				namedTypes.TSTypeReference.check(m.typeAnnotation?.typeAnnotation)
+			const annotation = m.typeAnnotation?.typeAnnotation as any
+			if (namedTypes.TSTypeReference.check(annotation)) {
+				const name = (annotation as any).typeName.name
+				if (!name) continue
+				if (typeParameters.includes(name)) continue
+
+				node.pushUse(
+					...TypeAnnotation.flatten(
+						m.typeAnnotation?.typeAnnotation as any
+					).map((t) => ({
+						name: t,
+						type: "type",
+					}))
+				)
+			}
+			// Check for call signatures (functions)
+			else if (
+				namedTypes.TSCallSignatureDeclaration.check(m) ||
+				namedTypes.TSMethodSignature.check(m) ||
+				namedTypes.TSConstructSignatureDeclaration.check(m)
 			) {
-				if (
-					namedTypes.TSTypeReference.check(m.typeAnnotation?.typeAnnotation)
-				) {
-					const name = (m.typeAnnotation?.typeAnnotation as any).typeName.name
-					if (!name) continue
-					if (typeParameters.includes(name)) continue
+				// Check for the return type
+				const returnType = ((m as any).returnType?.typeAnnotation as any)
+					?.typeName?.name
+				if (returnType) {
 					node.pushUse({
-						name: name,
+						name: returnType,
 						type: "type",
 					})
 				}
-			}
-			// Check for call signatures (functions)
-			else if (namedTypes.TSCallSignatureDeclaration.check(m)) {
-				// Check for the return type
-				const returnType = ((m as any).returnType?.typeAnnotation as any)
-					.typeName.name
-				node.pushUse({
-					name: returnType,
-					type: "type",
-				})
 
 				// Check for the params type params (recursive)
 				for (const p of (m as any).params) {
-					const name = (p.typeAnnotation?.typeAnnotation as any)?.typeName?.name
-					if (!name) continue
-
 					node.pushUse(
-						{
-							name: name,
-							type: "variable",
-						},
-						...TypeArguments.flatten(
-							(p.typeAnnotation?.typeAnnotation as any)?.typeArguments
-								?.params ?? []
-						).map((t) => ({
+						...TypeAnnotation.flatten(p.typeAnnotation ?? []).map((t) => ({
 							name: t,
 							type: "type",
 						}))
@@ -85,6 +85,6 @@ export namespace Interface {
 			}
 		}
 
-		console.log(node)
+		return node
 	}
 }

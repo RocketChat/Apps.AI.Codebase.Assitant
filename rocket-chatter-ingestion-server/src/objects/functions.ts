@@ -2,6 +2,7 @@ import { namedTypes } from "ast-types"
 import { print } from "recast"
 import { Classes } from "./classes"
 import { DBNode } from "./dbNode"
+import { TypeAnnotation } from "./typeAnnotation"
 import { TypeArgument } from "./typeArgument"
 
 export namespace Functions {
@@ -14,23 +15,27 @@ export namespace Functions {
 
 		// Handle type annotations
 		if (n.returnType?.typeAnnotation) {
-			const type = n.returnType.typeAnnotation
-			const returnType = (n.returnType.typeAnnotation as any).typeName.name
-			node.pushUse({
-				name: returnType,
-				type: "type",
-			})
+			node.pushUse(
+				...TypeAnnotation.flatten(n.returnType.typeAnnotation as any).map(
+					(name) => ({
+						name: name,
+						type: "type",
+					})
+				)
+			)
 		}
 
 		// Handle parameters to see if any of them uses an external entity
 		for (const p of n.params) {
 			if (namedTypes.Identifier.check(p)) {
-				const name = (p.typeAnnotation?.typeAnnotation as any)?.typeName?.name
-				if (!name) continue
-				node.pushUse({
-					name: name,
-					type: "variable",
-				})
+				node.pushUse(
+					...TypeAnnotation.flatten(
+						p.typeAnnotation?.typeAnnotation as any
+					).map((name) => ({
+						name: name,
+						type: "type",
+					}))
+				)
 			}
 		}
 
