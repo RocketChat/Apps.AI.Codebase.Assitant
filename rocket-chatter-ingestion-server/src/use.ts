@@ -1,8 +1,7 @@
 import { parse } from "@typescript-eslint/typescript-estree"
 import { namedTypes } from "ast-types"
 import { readFileSync } from "fs"
-import { Functions } from "./objects/functions"
-import { Interface } from "./objects/interface"
+import { TypeAlias } from "./objects/typeAlias"
 
 // Sample JavaScript code
 const code = readFileSync("code.ts").toString()
@@ -12,8 +11,10 @@ const ast = parse(code)
 
 for (const node of ast.body) {
 	if (namedTypes.FunctionDeclaration.check(node)) {
-		Functions.Handle(node)
+		// Functions.Handle(node)
 	} else if (namedTypes.TSInterfaceDeclaration.check(node)) {
-		Interface.Handle(node)
+		// Interface.Handle(node)
+	} else if (namedTypes.TSTypeAliasDeclaration.check(node)) {
+		TypeAlias.Handle(node)
 	}
 }
