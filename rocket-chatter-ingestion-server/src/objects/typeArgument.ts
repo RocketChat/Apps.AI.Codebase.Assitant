@@ -18,6 +18,6 @@ export namespace TypeArgument {
 			}
 		}
 
-		return typeArguments
+		return [...typeArguments]
 	}
 }

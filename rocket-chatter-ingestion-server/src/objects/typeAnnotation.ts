@@ -8,8 +8,6 @@ export namespace TypeAnnotation {
 
 		// Handle type annotations
 		if (namedTypes.TSTypeAnnotation.check(type)) {
-			const name = (type as any).typeName.name
-			if (name) typeArguments.add(name)
 			flatten((type as any).typeAnnotation).forEach((x) => typeArguments.add(x))
 		}
 		// Handle direct type references
@@ -69,6 +67,6 @@ export namespace TypeAnnotation {
 				flatten(type.typeParameter.default).forEach((x) => typeArguments.add(x))
 		}
 
-		return typeArguments
+		return [...typeArguments]
 	}
 }
