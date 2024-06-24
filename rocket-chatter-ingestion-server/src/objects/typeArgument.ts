@@ -1,6 +1,6 @@
 import { namedTypes } from "ast-types"
 
-export namespace TypeArguments {
+export namespace TypeArgument {
 	export function flatten(
 		args: namedTypes.TypeParameterInstantiation["params"]
 	) {
