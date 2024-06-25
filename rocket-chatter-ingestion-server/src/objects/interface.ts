@@ -1,8 +1,8 @@
 import { namedTypes } from "ast-types"
 import { print } from "recast"
-import { DBNode } from "./dbNode"
-import { TypeAnnotation } from "./typeAnnotation"
-import { TypeArgument } from "./typeArgument"
+import { DBNode } from "./fundamental/dbNode"
+import { TypeAnnotation } from "./fundamental/typeAnnotation"
+import { TypeArgument } from "./fundamental/typeArgument"
 
 export namespace Interface {
 	export function Handle(n: namedTypes.InterfaceDeclaration) {

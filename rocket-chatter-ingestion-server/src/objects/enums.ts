@@ -1,7 +1,7 @@
 import { namedTypes } from "ast-types"
 import { Classes } from "./classes"
-import { DBNode } from "./dbNode"
 import { Functions } from "./functions"
+import { DBNode } from "./fundamental/dbNode"
 
 export namespace Enums {
 	export function Handle(n: namedTypes.EnumDeclaration) {

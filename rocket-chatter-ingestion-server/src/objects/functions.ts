@@ -1,9 +1,9 @@
 import { namedTypes } from "ast-types"
 import { print } from "recast"
 import { Classes } from "./classes"
-import { DBNode } from "./dbNode"
-import { TypeAnnotation } from "./typeAnnotation"
-import { TypeArgument } from "./typeArgument"
+import { DBNode } from "./fundamental/dbNode"
+import { TypeAnnotation } from "./fundamental/typeAnnotation"
+import { TypeArgument } from "./fundamental/typeArgument"
 
 export namespace Functions {
 	export function Handle(n: namedTypes.FunctionDeclaration) {

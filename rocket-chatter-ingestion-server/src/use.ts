@@ -1,7 +1,7 @@
 import { parse } from "@typescript-eslint/typescript-estree"
 import { namedTypes } from "ast-types"
 import { readFileSync } from "fs"
-import { Enums } from "./objects/enums"
+import { Namespaces } from "./objects/namespaces"
 
 // Sample JavaScript code
 const code = readFileSync("code.ts").toString()
@@ -17,6 +17,10 @@ for (const node of ast.body) {
 	} else if (namedTypes.TSTypeAliasDeclaration.check(node)) {
 		// TypeAlias.Handle(node)
 	} else if (namedTypes.TSEnumDeclaration.check(node)) {
-		Enums.Handle(node)
+		// Enums.Handle(node)
+	} else if (namedTypes.TSModuleDeclaration.check(node)) {
+		Namespaces.Handle(node)
+	} else if (namedTypes.ClassDeclaration.check(node)) {
+		// Classes.Handle(node)
 	}
 }

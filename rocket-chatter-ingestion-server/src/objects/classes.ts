@@ -1,7 +1,7 @@
 import { namedTypes } from "ast-types"
-import { DBNode } from "./dbNode"
 import { Functions } from "./functions"
-import { TypeArgument } from "./typeArgument"
+import { DBNode } from "./fundamental/dbNode"
+import { TypeArgument } from "./fundamental/typeArgument"
 
 export namespace Classes {
 	export function Handle(n: namedTypes.ClassDeclaration) {

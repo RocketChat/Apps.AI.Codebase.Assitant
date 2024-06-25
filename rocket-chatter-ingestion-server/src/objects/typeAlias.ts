@@ -1,6 +1,6 @@
 import { namedTypes } from "ast-types"
-import { DBNode } from "./dbNode"
-import { TypeAnnotation } from "./typeAnnotation"
+import { DBNode } from "./fundamental/dbNode"
+import { TypeAnnotation } from "./fundamental/typeAnnotation"
 
 export namespace TypeAlias {
 	export function Handle(n: namedTypes.TSTypeAliasDeclaration) {
