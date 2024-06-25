@@ -10,10 +10,13 @@ export namespace Namespaces {
 		const node = new TreeNode(
 			(n.id as any)?.name.toString() ?? "",
 			"Namespace",
-			""
+			"",
+			n.loc?.start.line ?? 0,
+			n.loc?.start.column ?? 0
 		)
 
-		const body = (n as any).declaration.body.body as namedTypes.TSModuleBlock[]
+		const body = ((n as any).declaration?.body?.body ??
+			[]) as namedTypes.TSModuleBlock[]
 		for (const b of body) {
 			let d = b
 			if (namedTypes.ExportNamedDeclaration.check(b)) d = (b as any).declaration

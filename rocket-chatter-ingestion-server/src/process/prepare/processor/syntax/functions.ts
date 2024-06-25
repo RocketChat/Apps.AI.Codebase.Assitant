@@ -9,8 +9,10 @@ export namespace Functions {
 	export function Handle(n: namedTypes.FunctionDeclaration) {
 		const node = new TreeNode(
 			n.id?.name.toString() ?? "",
-			"function",
-			n.body.body.map((e) => print(e).code).join("\n")
+			"Function",
+			n.body.body.map((e) => print(e).code).join("\n"),
+			n.loc?.start.line ?? 0,
+			n.loc?.start.column ?? 0
 		)
 
 		// Handle type annotations

@@ -5,7 +5,13 @@ import { Functions } from "./functions"
 
 export namespace Classes {
 	export function Handle(n: namedTypes.ClassDeclaration) {
-		const node = new TreeNode(n.id?.name.toString() ?? "", "Class", "")
+		const node = new TreeNode(
+			n.id?.name.toString() ?? "",
+			"Class",
+			"",
+			n.loc?.start.line ?? 0,
+			n.loc?.start.column ?? 0
+		)
 
 		// Check for type parameters
 		const typeParameters: string[] = []

@@ -9,7 +9,9 @@ export namespace Interface {
 		const node = new TreeNode(
 			n.id?.name.toString() ?? "",
 			"Interface",
-			(n.body as any).body.map((e: any) => print(e).code).join("\n")
+			(n.body as any).body.map((e: any) => print(e).code).join("\n"),
+			n.loc?.start.line ?? 0,
+			n.loc?.start.column ?? 0
 		)
 
 		// Check for type parameters
