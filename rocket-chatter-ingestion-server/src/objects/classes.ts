@@ -1,8 +1,40 @@
 import { namedTypes } from "ast-types"
+import { DBNode } from "./dbNode"
 import { Functions } from "./functions"
 import { TypeArgument } from "./typeArgument"
 
 export namespace Classes {
+	export function Handle(n: namedTypes.ClassDeclaration) {
+		const node = new DBNode(n.id?.name.toString() ?? "", "Class", "")
+
+		// Check for type parameters
+		const typeParameters: string[] = []
+		for (const p of n.typeParameters?.params ?? []) {
+			typeParameters.push((p.name as any).name)
+		}
+
+		// Check for super class
+		if (n.superClass) {
+			if (namedTypes.Identifier.check(n.superClass)) {
+				node.pushUse({
+					name: n.superClass.name,
+					type: "class",
+				})
+			}
+		}
+
+		// Check for external references in any of the methods
+		for (const m of n.body.body) {
+			if (namedTypes.MethodDefinition.check(m)) {
+				if (namedTypes.FunctionExpression.check(m.value)) {
+					node.pushUse(...Functions.Handle(m.value as any).uses)
+				}
+			}
+		}
+
+		return node
+	}
+
 	export function flattenNewExpression(node: namedTypes.NewExpression) {
 		const uses: { name: string; type: string }[] = []
 
