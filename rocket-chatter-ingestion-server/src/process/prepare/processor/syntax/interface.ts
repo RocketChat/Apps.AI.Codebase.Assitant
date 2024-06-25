@@ -1,12 +1,12 @@
 import { namedTypes } from "ast-types"
 import { print } from "recast"
-import { DBNode } from "./fundamental/dbNode"
-import { TypeAnnotation } from "./fundamental/typeAnnotation"
-import { TypeArgument } from "./fundamental/typeArgument"
+import { TreeNode } from "../core/treeNode"
+import { TypeAnnotation } from "../core/typeAnnotation"
+import { TypeArgument } from "../core/typeArgument"
 
 export namespace Interface {
 	export function Handle(n: namedTypes.InterfaceDeclaration) {
-		const node = new DBNode(
+		const node = new TreeNode(
 			n.id?.name.toString() ?? "",
 			"Interface",
 			(n.body as any).body.map((e: any) => print(e).code).join("\n")

@@ -1,11 +1,11 @@
 import { namedTypes } from "ast-types"
+import { TreeNode } from "../core/treeNode"
+import { TypeArgument } from "../core/typeArgument"
 import { Functions } from "./functions"
-import { DBNode } from "./fundamental/dbNode"
-import { TypeArgument } from "./fundamental/typeArgument"
 
 export namespace Classes {
 	export function Handle(n: namedTypes.ClassDeclaration) {
-		const node = new DBNode(n.id?.name.toString() ?? "", "Class", "")
+		const node = new TreeNode(n.id?.name.toString() ?? "", "Class", "")
 
 		// Check for type parameters
 		const typeParameters: string[] = []

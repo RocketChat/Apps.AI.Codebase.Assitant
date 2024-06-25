@@ -1,11 +1,11 @@
 import { namedTypes } from "ast-types"
+import { TreeNode } from "../core/treeNode"
 import { Classes } from "./classes"
 import { Functions } from "./functions"
-import { DBNode } from "./fundamental/dbNode"
 
 export namespace Enums {
 	export function Handle(n: namedTypes.EnumDeclaration) {
-		const node = new DBNode(n.id?.name.toString() ?? "", "Enums", "")
+		const node = new TreeNode(n.id?.name.toString() ?? "", "Enums", "")
 
 		// Check for external references while initializing the enum members
 		for (const m of (n as any).members as namedTypes.TSEnumMember[]) {

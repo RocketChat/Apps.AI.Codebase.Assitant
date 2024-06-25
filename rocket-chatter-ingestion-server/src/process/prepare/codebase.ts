@@ -1,7 +1,7 @@
 import { existsSync, mkdirSync, rmSync, writeFileSync } from "fs"
 import { glob } from "glob"
 import { DBNode } from "../../core/dbNode"
-import { IFileProcessor } from "./fileProcessor.types"
+import { IFileProcessor } from "./processor/file.types"
 import { SourceFile } from "./sourceFile"
 import { ISourceFile } from "./sourceFile.types"
 

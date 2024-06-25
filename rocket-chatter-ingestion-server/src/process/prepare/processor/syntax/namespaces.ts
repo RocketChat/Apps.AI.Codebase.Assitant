@@ -1,13 +1,13 @@
 import { namedTypes } from "ast-types/gen/namedTypes"
+import { TreeNode } from "../core/treeNode"
 import { Enums } from "./enums"
 import { Functions } from "./functions"
-import { DBNode } from "./fundamental/dbNode"
 import { Interface } from "./interface"
 import { TypeAlias } from "./typeAlias"
 
 export namespace Namespaces {
 	export function Handle(n: namedTypes.TSModuleDeclaration) {
-		const node = new DBNode(
+		const node = new TreeNode(
 			(n.id as any)?.name.toString() ?? "",
 			"Namespace",
 			""

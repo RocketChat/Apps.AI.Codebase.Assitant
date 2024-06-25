@@ -1,10 +1,10 @@
 import { namedTypes } from "ast-types"
-import { DBNode } from "./fundamental/dbNode"
-import { TypeAnnotation } from "./fundamental/typeAnnotation"
+import { TreeNode } from "../core/treeNode"
+import { TypeAnnotation } from "../core/typeAnnotation"
 
 export namespace TypeAlias {
 	export function Handle(n: namedTypes.TSTypeAliasDeclaration) {
-		const node = new DBNode(n.id?.name.toString() ?? "", "TypeAlias", "")
+		const node = new TreeNode(n.id?.name.toString() ?? "", "TypeAlias", "")
 
 		// Check for type parameters
 		const typeParameters: string[] = []

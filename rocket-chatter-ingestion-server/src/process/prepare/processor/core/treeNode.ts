@@ -1,4 +1,4 @@
-export class DBNode {
+export class TreeNode {
 	name: string = ""
 	type: string = ""
 	body: string = ""
