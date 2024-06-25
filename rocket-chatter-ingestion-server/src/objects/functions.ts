@@ -92,6 +92,8 @@ export namespace Functions {
 				}
 			}
 		}
+
+		return node
 	}
 
 	export function flattenCallExpression(node: namedTypes.CallExpression) {
