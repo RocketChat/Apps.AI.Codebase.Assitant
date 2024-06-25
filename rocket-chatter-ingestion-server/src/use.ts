@@ -18,7 +18,10 @@ for (const node of ast.body) {
 		// TypeAlias.Handle(node)
 	} else if (namedTypes.TSEnumDeclaration.check(node)) {
 		// Enums.Handle(node)
-	} else if (namedTypes.TSModuleDeclaration.check(node)) {
+	} else if (
+		namedTypes.TSModuleDeclaration.check(node) ||
+		namedTypes.ExportNamedDeclaration.check(node)
+	) {
 		Namespaces.Handle(node)
 	} else if (namedTypes.ClassDeclaration.check(node)) {
 		// Classes.Handle(node)
