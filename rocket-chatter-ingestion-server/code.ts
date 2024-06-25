@@ -1,20 +1,25 @@
-let b = 4
-let c = 5
+class Employee<T> extends Human {
+	private _salary: number = 0
+	private _name: T
 
-function getValue(a: number): number {
-	return a
-}
+	constructor(name: T, salary: number) {
+		this._name = name
+		this._salary = salary
+	}
 
-enum ComputedEnum {
-	First = 1,
-	Sixth = c,
-	Seventh = new A<P>(),
-	Second = getValue(b),
-	Third = (() => {
-		return 3
-	})(),
-	Fourth = (() => 4)(),
-	Fifth = (function () {
-		return 5
-	})(),
+	get salary(): number {
+		return this._salary
+	}
+
+	set salary(value: number) {
+		if (value >= 0) {
+			this._salary = value
+		} else {
+			throw new Error("Salary cannot be negative.")
+		}
+	}
+
+	dumb<B>(a: T, b: B) {
+		return a
+	}
 }
