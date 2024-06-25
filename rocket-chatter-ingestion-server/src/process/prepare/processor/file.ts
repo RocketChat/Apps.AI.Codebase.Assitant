@@ -46,7 +46,7 @@ export class FileProcessor implements IFileProcessor {
 			}
 		}
 		for (const treeNode of treeNodes) {
-			console.log(`${sourceFile.getFullPath()}:${treeNode.getID()}`)
+			sourceFile.registerSyntax(treeNode)
 		}
 	}
 }
