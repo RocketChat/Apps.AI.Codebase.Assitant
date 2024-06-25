@@ -1,19 +1,20 @@
-interface A {
-	name(): string
+let b = 4
+let c = 5
+
+function getValue(a: number): number {
+	return a
 }
 
-interface Printable<T> {
-	print(): void
-}
-
-type aA = [string, Printable<string>]
-
-class People {}
-
-class Animal {}
-
-interface Loggable<T> extends Printable<T>, aA {
-	// someProp: Loggable<string> & (People | Animal)
-
-	log(a: Printable<T> & Loggable<string> & (People | Animal)): TSMethodSignature
+enum ComputedEnum {
+	First = 1,
+	Sixth = c,
+	Seventh = new A<P>(),
+	Second = getValue(b),
+	Third = (() => {
+		return 3
+	})(),
+	Fourth = (() => 4)(),
+	Fifth = (function () {
+		return 5
+	})(),
 }
