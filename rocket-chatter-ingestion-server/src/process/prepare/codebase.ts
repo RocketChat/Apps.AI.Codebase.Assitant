@@ -43,7 +43,7 @@ export class Codebase {
 	private prepareFilesMetadata() {
 		const extensions = ["ts", "tsx", "js", "jsx"]
 
-		console.log(`🕒 Preparing metadata for files: *.${extensions.join(", *.")}`)
+		// console.log(`🕒 Preparing metadata for files: *.${extensions.join(", *.")}`)
 		{
 			const globPatterns = extensions.map((x) => `**/*.${x}`)
 			for (const pattern of globPatterns) {
@@ -53,7 +53,7 @@ export class Codebase {
 				this._files.push(...files)
 			}
 		}
-		console.log(`✅ Prepared metadata for ${this._files.length} files\n`)
+		// console.log(`✅ Prepared metadata for ${this._files.length} files\n`)
 	}
 
 	private makeFilesBatches() {
@@ -93,7 +93,7 @@ export class Codebase {
 	 * @returns Promise<void>
 	 */
 	async process(): Promise<void> {
-		console.log("🕒 Preparing Nodes\n")
+		// console.log("🕒 Preparing Nodes\n")
 
 		let nodesProcessed = 0
 		for (const [index, batch] of this._batches.entries()) {
@@ -101,7 +101,7 @@ export class Codebase {
 			nodesProcessed += await this.processFilesBatch(index, start, end)
 		}
 
-		console.log(`✅ Prepared ${nodesProcessed} nodes`)
+		// console.log(`✅ Prepared ${nodesProcessed} nodes`)
 	}
 
 	private async processFilesBatch(
@@ -111,7 +111,7 @@ export class Codebase {
 	): Promise<number> {
 		let nNodesProcessed = 0
 
-		console.log(`🕒 Processing ${start}-${end} files`)
+		// console.log(`🕒 Processing ${start}-${end} files`)
 		{
 			let nodes: Record<string, DBNode> = {}
 
@@ -137,9 +137,9 @@ export class Codebase {
 
 			nNodesProcessed = Object.keys(nodes).length
 		}
-		console.log(
-			`✅ Processed ${start}-${end} files (${nNodesProcessed} nodes)\n`
-		)
+		// console.log(
+		// 	`✅ Processed ${start}-${end} files (${nNodesProcessed} nodes)\n`
+		// )
 
 		return nNodesProcessed
 	}

@@ -36,8 +36,6 @@ export namespace Namespaces {
 			}
 		}
 
-		console.log(node)
-
 		return node
 	}
 }
