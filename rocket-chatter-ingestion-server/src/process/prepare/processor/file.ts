@@ -1,9 +1,15 @@
 import { parse } from "@typescript-eslint/typescript-estree"
 import { namedTypes } from "ast-types"
+
 import { DBNode } from "../../../core/dbNode"
 import { ISourceFile } from "../sourceFile.types"
 import { IFileProcessor } from "./file.types"
+
+import { Enums } from "./syntax/enums"
+import { Functions } from "./syntax/functions"
+import { Interface } from "./syntax/interface"
 import { Namespaces } from "./syntax/namespaces"
+import { TypeAlias } from "./syntax/typeAlias"
 
 export class FileProcessor implements IFileProcessor {
 	private processNode(node: DBNode, nodesRef: Record<string, DBNode>): void {}
@@ -16,13 +22,13 @@ export class FileProcessor implements IFileProcessor {
 
 		for (const node of ast.body) {
 			if (namedTypes.FunctionDeclaration.check(node)) {
-				// Functions.Handle(node)
+				Functions.Handle(node)
 			} else if (namedTypes.TSInterfaceDeclaration.check(node)) {
-				// Interface.Handle(node)
+				Interface.Handle(node)
 			} else if (namedTypes.TSTypeAliasDeclaration.check(node)) {
-				// TypeAlias.Handle(node)
+				TypeAlias.Handle(node)
 			} else if (namedTypes.TSEnumDeclaration.check(node)) {
-				// Enums.Handle(node)
+				Enums.Handle(node)
 			} else if (
 				namedTypes.TSModuleDeclaration.check(node) ||
 				namedTypes.ExportNamedDeclaration.check(node)
