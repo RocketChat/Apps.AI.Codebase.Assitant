@@ -15,6 +15,12 @@ export namespace Functions {
 			n.loc?.start.column ?? 0
 		)
 
+		// Check for type parameters
+		const typeParameters: string[] = []
+		for (const p of n.typeParameters?.params ?? []) {
+			typeParameters.push((p.name as any).name)
+		}
+
 		// Handle type annotations
 		if (n.returnType?.typeAnnotation) {
 			node.pushUse(
@@ -94,6 +100,9 @@ export namespace Functions {
 				}
 			}
 		}
+
+		// Remove uses that uses the type parameters
+		node.uses = node.uses.filter((u) => !typeParameters.includes(u.name))
 
 		return node
 	}

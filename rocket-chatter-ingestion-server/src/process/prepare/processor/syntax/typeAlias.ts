@@ -26,6 +26,9 @@ export namespace TypeAlias {
 			}))
 		)
 
+		// Remove uses that uses the type parameters
+		node.uses = node.uses.filter((u) => !typeParameters.includes(u.name))
+
 		return node
 	}
 }
