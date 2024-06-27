@@ -29,6 +29,16 @@ export namespace Classes {
 			}
 		}
 
+		// Check for implemented interfaces
+		if (n.implements) {
+			for (const i of n.implements) {
+				node.pushUse({
+					name: (i as any).expression.name,
+					type: "interface",
+				})
+			}
+		}
+
 		// Check for external references in any of the methods
 		for (const m of n.body.body) {
 			if (namedTypes.MethodDefinition.check(m)) {
@@ -37,6 +47,9 @@ export namespace Classes {
 				}
 			}
 		}
+
+		// Remove uses that uses the type parameters
+		node.uses = node.uses.filter((u) => !typeParameters.includes(u.name))
 
 		return node
 	}
