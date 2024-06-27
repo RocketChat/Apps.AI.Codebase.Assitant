@@ -12,7 +12,8 @@ export namespace Functions {
 			"Function",
 			n.body.body.map((e) => print(e).code).join("\n"),
 			n.loc?.start.line ?? 0,
-			n.loc?.start.column ?? 0
+			n.loc?.start.column ?? 0,
+			""
 		)
 
 		// Check for type parameters

@@ -18,17 +18,4 @@ export class SourceFile implements ISourceFile {
 	getFullPath(): string {
 		return this._path
 	}
-
-	registerSyntax(node: TreeNode): void {
-		const nodeID = `${this._path}:${node.getID()}`
-		this._syntaxNodes[nodeID] = node
-	}
-
-	hasSyntax(nodeID: string): boolean {
-		return nodeID in this._syntaxNodes
-	}
-
-	getSyntaxNode(nodeID: string): TreeNode {
-		return this._syntaxNodes[nodeID]
-	}
 }

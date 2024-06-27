@@ -10,7 +10,8 @@ export namespace Classes {
 			"Class",
 			"",
 			n.loc?.start.line ?? 0,
-			n.loc?.start.column ?? 0
+			n.loc?.start.column ?? 0,
+			""
 		)
 
 		// Check for type parameters

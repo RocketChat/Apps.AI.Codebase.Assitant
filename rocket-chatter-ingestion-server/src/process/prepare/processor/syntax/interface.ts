@@ -11,7 +11,8 @@ export namespace Interface {
 			"Interface",
 			(n.body as any).body.map((e: any) => print(e).code).join("\n"),
 			n.loc?.start.line ?? 0,
-			n.loc?.start.column ?? 0
+			n.loc?.start.column ?? 0,
+			""
 		)
 
 		// Check for type parameters

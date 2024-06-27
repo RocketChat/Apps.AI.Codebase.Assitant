@@ -12,7 +12,8 @@ export namespace Namespaces {
 			"Namespace",
 			"",
 			n.loc?.start.line ?? 0,
-			n.loc?.start.column ?? 0
+			n.loc?.start.column ?? 0,
+			""
 		)
 
 		const body = ((n as any).declaration?.body?.body ??

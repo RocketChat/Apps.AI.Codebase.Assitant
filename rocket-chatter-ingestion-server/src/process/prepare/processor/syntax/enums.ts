@@ -10,7 +10,8 @@ export namespace Enums {
 			"Enum",
 			"",
 			n.loc?.start.line ?? 0,
-			n.loc?.start.column ?? 0
+			n.loc?.start.column ?? 0,
+			""
 		)
 
 		// Check for external references while initializing the enum members

@@ -15,7 +15,8 @@ export namespace VariableDeclarations {
 					"variable",
 					"",
 					n.loc?.start.line ?? 0,
-					n.loc?.start.column ?? 0
+					n.loc?.start.column ?? 0,
+					""
 				)
 
 				// For variables declared using other variables
