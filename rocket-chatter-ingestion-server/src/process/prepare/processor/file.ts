@@ -67,7 +67,7 @@ export class FileProcessor implements IFileProcessor {
 
 		// Replace import names with absolute paths
 		for (const treeNode of treeNodes) {
-			treeNode.sourceFilePath = sourceFile.getFullPath()
+			treeNode.sourceFileRelativePath = sourceFile.getFullPath()
 			treeNode.uses = treeNode.uses
 				.filter((x) => x.name)
 				.map((x) => {

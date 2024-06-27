@@ -5,7 +5,7 @@ export class TreeNode {
 
 	lineNumber: number
 	columnNumber: number
-	sourceFilePath: string
+	sourceFileRelativePath: string
 
 	uses: {
 		name: string
@@ -25,7 +25,7 @@ export class TreeNode {
 		this.body = body
 		this.lineNumber = lineNumber
 		this.columnNumber = columnNumber
-		this.sourceFilePath = sourceFilePath
+		this.sourceFileRelativePath = sourceFilePath
 	}
 
 	toString() {
@@ -33,7 +33,7 @@ export class TreeNode {
 	}
 
 	getID(): string {
-		return `${this.sourceFilePath}:${this.name}:${this.type}:${this.lineNumber}:${this.columnNumber}`
+		return `${this.sourceFileRelativePath}:${this.name}:${this.type}:${this.lineNumber}:${this.columnNumber}`
 	}
 
 	pushUse(...uses: { name: string; type: string }[]) {
