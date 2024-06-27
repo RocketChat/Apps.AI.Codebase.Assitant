@@ -4,14 +4,7 @@ import { TypeAnnotation } from "../core/typeAnnotation"
 
 export namespace TypeAlias {
 	export function Handle(n: namedTypes.TSTypeAliasDeclaration) {
-		const node = new TreeNode(
-			n.id?.name.toString() ?? "",
-			"TypeAlias",
-			"",
-			n.loc?.start.line ?? 0,
-			n.loc?.start.column ?? 0,
-			""
-		)
+		const node = new TreeNode(n.id?.name.toString() ?? "", "TypeAlias", "", "")
 
 		// Check for type parameters
 		const typeParameters: string[] = []

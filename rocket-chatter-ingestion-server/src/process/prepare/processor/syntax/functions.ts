@@ -11,8 +11,6 @@ export namespace Functions {
 			n.id?.name.toString() ?? "",
 			"Function",
 			n.body.body.map((e) => print(e).code).join("\n"),
-			n.loc?.start.line ?? 0,
-			n.loc?.start.column ?? 0,
 			""
 		)
 

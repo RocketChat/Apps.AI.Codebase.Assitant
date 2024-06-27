@@ -10,8 +10,6 @@ export namespace Interface {
 			n.id?.name.toString() ?? "",
 			"Interface",
 			(n.body as any).body.map((e: any) => print(e).code).join("\n"),
-			n.loc?.start.line ?? 0,
-			n.loc?.start.column ?? 0,
 			""
 		)
 

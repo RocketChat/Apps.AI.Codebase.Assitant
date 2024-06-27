@@ -11,8 +11,6 @@ export namespace Namespaces {
 			(n.id as any)?.name.toString() ?? "",
 			"Namespace",
 			"",
-			n.loc?.start.line ?? 0,
-			n.loc?.start.column ?? 0,
 			""
 		)
 

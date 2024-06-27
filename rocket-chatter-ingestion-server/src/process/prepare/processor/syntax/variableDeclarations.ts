@@ -10,14 +10,7 @@ export namespace VariableDeclarations {
 		// For variable declarations
 		for (const d of n.declarations) {
 			if (namedTypes.VariableDeclarator.check(d)) {
-				const node = new TreeNode(
-					(d.id as any).name,
-					"variable",
-					"",
-					n.loc?.start.line ?? 0,
-					n.loc?.start.column ?? 0,
-					""
-				)
+				const node = new TreeNode((d.id as any).name, "variable", "", "")
 
 				// For variables declared using other variables
 				if (namedTypes.Identifier.check(d.init)) {
