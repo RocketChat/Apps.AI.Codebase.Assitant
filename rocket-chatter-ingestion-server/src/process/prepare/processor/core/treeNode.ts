@@ -5,6 +5,7 @@ export class TreeNode {
 
 	lineNumber: number
 	columnNumber: number
+	sourceFilePath: string
 
 	uses: {
 		name: string
@@ -16,13 +17,15 @@ export class TreeNode {
 		type: string,
 		body: string,
 		lineNumber: number,
-		columnNumber: number
+		columnNumber: number,
+		sourceFilePath: string
 	) {
 		this.name = name
 		this.type = type
 		this.body = body
 		this.lineNumber = lineNumber
 		this.columnNumber = columnNumber
+		this.sourceFilePath = sourceFilePath
 	}
 
 	toString() {
@@ -30,7 +33,7 @@ export class TreeNode {
 	}
 
 	getID(): string {
-		return `${this.name}:${this.type}:${this.lineNumber}:${this.columnNumber}`
+		return `${this.sourceFilePath}:${this.name}:${this.type}:${this.lineNumber}:${this.columnNumber}`
 	}
 
 	pushUse(...uses: { name: string; type: string }[]) {
@@ -38,5 +41,9 @@ export class TreeNode {
 			if (this.uses.findIndex((u) => u.name == use.name) !== -1) continue
 			this.uses.push(use)
 		}
+	}
+
+	isFile() {
+		return false
 	}
 }
