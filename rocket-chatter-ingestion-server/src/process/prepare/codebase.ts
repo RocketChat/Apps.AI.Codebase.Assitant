@@ -117,9 +117,9 @@ export class Codebase {
 
 			/* Step 1 */
 			// try {
-				const files = this._files.slice(start, end)
-				const jobs = files.map((x) => this._fileProcessor.process(x, nodes))
-				await Promise.all(jobs)
+			const files = this._files.slice(start, end)
+			const jobs = files.map((x) => this._fileProcessor.process(x, nodes))
+			await Promise.all(jobs)
 			// } catch {
 			// 	console.error(`Error in processing ${start}-${end} files`)
 			// }
