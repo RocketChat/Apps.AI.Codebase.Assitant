@@ -1,11 +1,11 @@
 import { exec } from "child_process"
 import { Request, Response } from "express"
 import { existsSync, rmdirSync } from "fs"
+import nanoid from "nanoid"
 import { insertStyleguides } from "../core/styleguides"
 import { insertDataIntoDB } from "../process/ingest/ingest"
-import { prepareCodebase, prepareNodesEmbeddings } from "../process/prepare"
-
-const DIR = ["./project", "./Rocket-Chat"]
+import { Codebase } from "../process/prepare/codebase"
+import { FileProcessor } from "../process/prepare/processor/file"
 
 /**
  * This function fetches the codebase from the url given
@@ -47,9 +47,14 @@ function fetchCodebaseFromRemote(dirName: string, remoteURL: string): boolean {
  */
 async function startProcessJob(dirName: string): Promise<boolean> {
 	try {
-		const batchSize = 250
-		await prepareCodebase(dirName, batchSize)
-		await prepareNodesEmbeddings("data", batchSize)
+		const batchSize = 1
+
+		/* Step 1: Prepare the codebase */
+		const codebase = new Codebase(dirName, new FileProcessor(), batchSize)
+		codebase.process()
+
+		/* Step 2: Prepare the nodes embeddings */
+		// await prepareNodesEmbeddings("data", batchSize)
 
 		await insertDataIntoDB(batchSize)
 		await insertStyleguides()
@@ -67,14 +72,16 @@ async function startProcessJob(dirName: string): Promise<boolean> {
  *
  */
 export async function ingestRoute(_: Request, res: Response) {
-	const dirName: string = DIR.at(-1)!
+	const sessionID = nanoid.customAlphabet(
+		"1234567890abcdefghijklmnopqrstuvwxyz"
+	)(10)
 
 	const startTime = Date.now()
 	{
 		let success = false
 
 		success = fetchCodebaseFromRemote(
-			dirName,
+			sessionID,
 			"https://github.com/RocketChat/Rocket.Chat"
 		)
 		if (!success) {
@@ -86,7 +93,7 @@ export async function ingestRoute(_: Request, res: Response) {
 			})
 		}
 
-		success = await startProcessJob(dirName)
+		success = await startProcessJob(sessionID)
 		if (!success) {
 			console.error("Error in processing code.")
 			return res.status(500).send({
