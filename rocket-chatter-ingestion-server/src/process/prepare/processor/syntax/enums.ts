@@ -1,4 +1,5 @@
 import { namedTypes } from "ast-types"
+
 import { TreeNode } from "../core/treeNode"
 import { Classes } from "./classes"
 import { Functions } from "./functions"
@@ -9,12 +10,10 @@ export namespace Enums {
 			start: {
 				line: n.loc?.start.line ?? 0,
 				column: n.loc?.start.column ?? 0,
-				index: (n as any).start ?? 0,
 			},
 			end: {
 				line: n.loc?.end.line ?? 0,
 				column: n.loc?.end.column ?? 0,
-				index: (n as any).end ?? 0,
 			},
 		})
 

@@ -1,5 +1,5 @@
 import { namedTypes } from "ast-types"
-import { print } from "recast"
+
 import { TreeNode } from "../core/treeNode"
 import { TypeAnnotation } from "../core/typeAnnotation"
 import { TypeArgument } from "../core/typeArgument"
@@ -9,18 +9,16 @@ export namespace Interface {
 		const node = new TreeNode(
 			n.id?.name.toString() ?? "",
 			"Interface",
-			(n.body as any).body.map((e: any) => print(e).code).join("\n"),
+			"",
 			"",
 			{
 				start: {
 					line: n.loc?.start.line ?? 0,
 					column: n.loc?.start.column ?? 0,
-					index: (n as any).start ?? 0,
 				},
 				end: {
 					line: n.loc?.end.line ?? 0,
 					column: n.loc?.end.column ?? 0,
-					index: (n as any).end ?? 0,
 				},
 			}
 		)
@@ -32,7 +30,7 @@ export namespace Interface {
 		}
 
 		// Check for extensions
-		for (const e of n.extends) {
+		for (const e of n.extends ?? []) {
 			const name = (e as any).expression.name
 			if (typeParameters.includes(name)) continue
 

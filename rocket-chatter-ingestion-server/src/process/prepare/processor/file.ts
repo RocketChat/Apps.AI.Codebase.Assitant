@@ -86,7 +86,18 @@ export class FileProcessor implements IFileProcessor {
 		}
 
 		// Add the nodes to the global reference
+		const fileContentLines = fileContent.split("\n")
+
 		for (const treeNode of treeNodes) {
+			if (!treeNode.body) {
+				const startLine = treeNode.location.start.line - 1
+				const endLine = treeNode.location.end.line + 1
+				treeNode.body = fileContentLines
+					.slice(startLine, endLine)
+					.join("\n")
+					.trim()
+			}
+
 			const dbNode = DBNode.fromTreeNode(treeNode)
 			nodesRef[dbNode.id] = dbNode
 		}

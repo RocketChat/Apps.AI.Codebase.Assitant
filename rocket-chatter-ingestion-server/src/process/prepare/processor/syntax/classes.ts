@@ -1,30 +1,21 @@
 import { namedTypes } from "ast-types"
 
-import { print } from "recast"
 import { TreeNode } from "../core/treeNode"
 import { TypeArgument } from "../core/typeArgument"
 import { Functions } from "./functions"
 
 export namespace Classes {
 	export function Handle(n: namedTypes.ClassDeclaration) {
-		const node = new TreeNode(
-			n.id?.name.toString() ?? "",
-			"Class",
-			n.body.body.map((e) => print(e).code).join("\n"),
-			"",
-			{
-				start: {
-					line: n.loc?.start.line ?? 0,
-					column: n.loc?.start.column ?? 0,
-					index: (n as any).start ?? 0,
-				},
-				end: {
-					line: n.loc?.end.line ?? 0,
-					column: n.loc?.end.column ?? 0,
-					index: (n as any).end ?? 0,
-				},
-			}
-		)
+		const node = new TreeNode(n.id?.name.toString() ?? "", "Class", "", "", {
+			start: {
+				line: n.body.loc?.start.line ?? 0,
+				column: n.body.loc?.start.column ?? 0,
+			},
+			end: {
+				line: n.body.loc?.end.line ?? 0,
+				column: n.body.loc?.end.column ?? 0,
+			},
+		})
 
 		// Check for type parameters
 		const typeParameters: string[] = []

@@ -2,12 +2,10 @@ export type TreeNodeSourceLocation = {
 	start: {
 		line: number
 		column: number
-		index: number
 	}
 	end: {
 		line: number
 		column: number
-		index: number
 	}
 }
 
