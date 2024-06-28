@@ -5,7 +5,18 @@ import { Functions } from "./functions"
 
 export namespace Enums {
 	export function Handle(n: namedTypes.EnumDeclaration) {
-		const node = new TreeNode(n.id?.name.toString() ?? "", "Enum", "", "")
+		const node = new TreeNode(n.id?.name.toString() ?? "", "Enum", "", "", {
+			start: {
+				line: n.loc?.start.line ?? 0,
+				column: n.loc?.start.column ?? 0,
+				index: (n as any).start ?? 0,
+			},
+			end: {
+				line: n.loc?.end.line ?? 0,
+				column: n.loc?.end.column ?? 0,
+				index: (n as any).end ?? 0,
+			},
+		})
 
 		// Check for external references while initializing the enum members
 		for (const m of (n as any).members as namedTypes.TSEnumMember[]) {

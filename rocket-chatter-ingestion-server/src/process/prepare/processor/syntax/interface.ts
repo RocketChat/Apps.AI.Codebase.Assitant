@@ -10,7 +10,19 @@ export namespace Interface {
 			n.id?.name.toString() ?? "",
 			"Interface",
 			(n.body as any).body.map((e: any) => print(e).code).join("\n"),
-			""
+			"",
+			{
+				start: {
+					line: n.loc?.start.line ?? 0,
+					column: n.loc?.start.column ?? 0,
+					index: (n as any).start ?? 0,
+				},
+				end: {
+					line: n.loc?.end.line ?? 0,
+					column: n.loc?.end.column ?? 0,
+					index: (n as any).end ?? 0,
+				},
+			}
 		)
 
 		// Check for type parameters

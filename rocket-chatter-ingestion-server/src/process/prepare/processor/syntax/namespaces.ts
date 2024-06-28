@@ -11,7 +11,19 @@ export namespace Namespaces {
 			(n.id as any)?.name.toString() ?? "",
 			"Namespace",
 			"",
-			""
+			"",
+			{
+				start: {
+					line: n.loc?.start.line ?? 0,
+					column: n.loc?.start.column ?? 0,
+					index: (n as any).start ?? 0,
+				},
+				end: {
+					line: n.loc?.end.line ?? 0,
+					column: n.loc?.end.column ?? 0,
+					index: (n as any).end ?? 0,
+				},
+			}
 		)
 
 		const body = ((n as any).declaration?.body?.body ??
