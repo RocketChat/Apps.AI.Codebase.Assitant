@@ -1,6 +1,7 @@
-import { parse } from "@typescript-eslint/typescript-estree"
 import { namedTypes } from "ast-types"
 import path from "path"
+import { parse } from "recast"
+import * as tsParser from "recast/parsers/typescript"
 
 import { DBNode } from "../../../core/dbNode"
 import { ISourceFile } from "../sourceFile.types"
@@ -18,10 +19,12 @@ import { VariableDeclarations } from "./syntax/variableDeclarations"
 export class FileProcessor implements IFileProcessor {
 	process(sourceFile: ISourceFile, nodesRef: Record<string, DBNode>): void {
 		const fileContent = sourceFile.read()
-		const ast = parse(fileContent)
+		const ast = parse(fileContent, {
+			parser: tsParser,
+		})
 
 		let treeNodes: TreeNode[] = []
-		for (let node of ast.body) {
+		for (let node of ast.program.body) {
 			if (namedTypes.ExportNamedDeclaration.check(node))
 				node = (node as any).declaration
 
@@ -30,13 +33,13 @@ export class FileProcessor implements IFileProcessor {
 				treeNodes.push(Functions.Handle(node))
 			else if (namedTypes.TSInterfaceDeclaration.check(node))
 				/* Interfaces */
-				treeNodes.push(Interface.Handle(node))
+				treeNodes.push(Interface.Handle(node as any))
 			else if (namedTypes.TSTypeAliasDeclaration.check(node))
 				/* Type Aliases */
 				treeNodes.push(TypeAlias.Handle(node))
 			else if (namedTypes.TSEnumDeclaration.check(node))
 				/* Enums */
-				treeNodes.push(Enums.Handle(node))
+				treeNodes.push(Enums.Handle(node as any))
 			else if (namedTypes.ClassDeclaration.check(node))
 				/* Classes */
 				treeNodes.push(Classes.Handle(node))
@@ -51,9 +54,9 @@ export class FileProcessor implements IFileProcessor {
 		// Resolve imports
 		const parsedImports = new Map<string, string>() // { importName: absolutePath }
 		{
-			const imports = ast.body
-				.filter((node) => namedTypes.ImportDeclaration.check(node)) // Filter out all non-import nodes
-				.filter((node) => (node as any).source.value.startsWith(".")) // Filter out all library/non-relative imports
+			const imports = ast.program.body
+				.filter((node: any) => namedTypes.ImportDeclaration.check(node)) // Filter out all non-import nodes
+				.filter((node: any) => node.source.value.startsWith(".")) // Filter out all library/non-relative imports
 			for (const i of imports) {
 				const importName = (i as any).specifiers[0].local.name
 
