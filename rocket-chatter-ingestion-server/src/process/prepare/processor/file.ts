@@ -57,20 +57,15 @@ export class FileProcessor implements IFileProcessor {
 			for (const i of imports) {
 				const importName = (i as any).specifiers[0].local.name
 
-				const sourceFileAbsolutePath = path
-					.resolve(sourceFile.getFullPath())
-					.replace(/\\/g, "/")
-				const projectPath = sourceFileAbsolutePath.slice(
-					0,
-					sourceFileAbsolutePath.indexOf(sourceFile.getFullPath())
-				)
-
-				const targetFileRelativePath = path
+				const projectPath = sourceFile.getProjectPath()
+				const targetFileAbsolutePath = path
 					.resolve(path.join(sourceFile.getFullPath(), (i as any).source.value))
 					.replace(/\\/g, "/")
-				const absolutePath = targetFileRelativePath.slice(projectPath.length)
+				const targetFileRelativePath = targetFileAbsolutePath.slice(
+					projectPath.length
+				)
 
-				parsedImports.set(importName, absolutePath)
+				parsedImports.set(importName, targetFileRelativePath)
 			}
 		}
 
