@@ -1,8 +1,22 @@
+export type TreeNodeSourceLocation = {
+	start: {
+		line: number
+		column: number
+		index: number
+	}
+	end: {
+		line: number
+		column: number
+		index: number
+	}
+}
+
 export class TreeNode {
 	name: string = ""
 	type: string = ""
 	body: string = ""
 
+	location: TreeNodeSourceLocation
 	sourceFileRelativePath: string
 
 	uses: {
@@ -14,12 +28,14 @@ export class TreeNode {
 		name: string,
 		type: string,
 		body: string,
-		sourceFilePath: string
+		sourceFilePath: string,
+		location: TreeNodeSourceLocation
 	) {
 		this.name = name
 		this.type = type
 		this.body = body
 		this.sourceFileRelativePath = sourceFilePath
+		this.location = location
 	}
 
 	toString() {
