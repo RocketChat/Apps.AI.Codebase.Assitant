@@ -55,11 +55,20 @@ export class FileProcessor implements IFileProcessor {
 				.filter((node) => namedTypes.ImportDeclaration.check(node)) // Filter out all non-import nodes
 				.filter((node) => (node as any).source.value.startsWith(".")) // Filter out all library/non-relative imports
 			for (const i of imports) {
-				const absolutePath = path.resolve(
-					path.dirname(sourceFile.getFullPath()),
-					(i as any).source.value + ".ts"
-				)
 				const importName = (i as any).specifiers[0].local.name
+
+				const sourceFileAbsolutePath = path
+					.resolve(sourceFile.getFullPath())
+					.replace(/\\/g, "/")
+				const projectPath = sourceFileAbsolutePath.slice(
+					0,
+					sourceFileAbsolutePath.indexOf(sourceFile.getFullPath())
+				)
+
+				const targetFileRelativePath = path
+					.resolve(path.join(sourceFile.getFullPath(), (i as any).source.value))
+					.replace(/\\/g, "/")
+				const absolutePath = targetFileRelativePath.slice(projectPath.length)
 
 				parsedImports.set(importName, absolutePath)
 			}
@@ -72,7 +81,7 @@ export class FileProcessor implements IFileProcessor {
 				.filter((x) => x.name)
 				.map((x) => {
 					if (parsedImports.has(x.name)) {
-						x.name = parsedImports.get(x.name)!
+						x.name = `${parsedImports.get(x.name)!}:${x.name}`
 					}
 					return x
 				})
