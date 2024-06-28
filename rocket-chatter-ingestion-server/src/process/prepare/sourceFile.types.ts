@@ -13,5 +13,7 @@ export enum SourceFileType {
 
 export interface ISourceFile {
 	read(): string
+
+	getProjectPath(): string
 	getFullPath(): string
 }
