@@ -89,13 +89,8 @@ export class Codebase {
 		this._batches = batches
 	}
 
-	private writeNodesRangeToFile(
-		nodes: Record<string, DBNode>,
-		fileName: string,
-		start: number,
-		end: number
-	) {
-		const entries = Object.entries(nodes).slice(start, end)
+	private writeNodesToFile(nodes: Record<string, DBNode>, fileName: string) {
+		const entries = Object.entries(nodes)
 		if (entries.length === 0) return 0
 		const batch = Object.fromEntries(entries)
 		writeFileSync(
@@ -127,15 +122,7 @@ export class Codebase {
 			// }
 
 			/* Step 2 */
-			for (let i = 0; i < Object.keys(nodes).length; i += this._batchSize) {
-				const [start, end] = [i, i + this._batchSize]
-				this.writeNodesRangeToFile(
-					nodes,
-					`batch-${batchNumber}.json`,
-					start,
-					end
-				)
-			}
+			this.writeNodesToFile(nodes, `batch-${batchNumber}.json`)
 
 			nNodesProcessed = Object.keys(nodes).length
 		}
