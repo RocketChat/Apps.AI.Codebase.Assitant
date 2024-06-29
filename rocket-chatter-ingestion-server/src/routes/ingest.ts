@@ -1,7 +1,7 @@
 import { exec } from "child_process"
 import { Request, Response } from "express"
 import { existsSync, rmdirSync } from "fs"
-import nanoid from "nanoid"
+import { v4 as uuidv4 } from "uuid"
 import { insertStyleguides } from "../core/styleguides"
 import { insertDataIntoDB } from "../process/ingest/ingest"
 import { Codebase } from "../process/prepare/codebase"
@@ -166,9 +166,7 @@ export async function ingestRoute(req: Request, res: Response) {
 		message: "INGESTION INITIATED",
 	})
 
-	const sessionID = nanoid.customAlphabet(
-		"1234567890abcdefghijklmnopqrstuvwxyz"
-	)(10)
+	const sessionID = uuidv4()
 
 	const startTime = Date.now()
 	{
