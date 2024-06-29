@@ -3,7 +3,8 @@ import { FileProcessor } from "./process/prepare/processor/file"
 
 async function main() {
 	const codebase = new Codebase("./project", new FileProcessor())
-	codebase.process()
+	await codebase.process()
+	await codebase.embed()
 }
 
 main()
