@@ -45,8 +45,12 @@ export class Codebase {
 		this.makeFilesBatches()
 	}
 
+	get embeddingsDirPath(): string {
+		return this._embeddingsDirPath
+	}
+
 	private initializeDataDirectory(removeExisting = true): void {
-		this._dataDirName = `data-${Date.now()}`
+		this._dataDirName = `data`
 		this._dataDirPath = path.resolve(this._path, this._dataDirName)
 
 		this._embeddingsDirName = `${this._dataDirName}/embeddings`
