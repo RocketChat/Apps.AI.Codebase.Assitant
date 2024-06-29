@@ -41,7 +41,7 @@ export class TreeNode {
 	}
 
 	getID(): string {
-		return `${this.sourceFileRelativePath}:${this.name}:${this.type}`
+		return `${this.sourceFileRelativePath}:${this.name}`
 	}
 
 	pushUse(...uses: { name: string; type: string }[]) {

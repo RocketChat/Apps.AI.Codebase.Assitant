@@ -59,16 +59,34 @@ export class FileProcessor implements IFileProcessor {
 				.filter((node: any) => node.source.value.startsWith(".")) // Filter out all library/non-relative imports
 			for (const i of imports) {
 				const importName = (i as any).specifiers[0].local.name
+				const relativePath = (i as any).source.value
 
-				const projectPath = sourceFile.getProjectPath()
-				const targetFileAbsolutePath = path
-					.resolve(path.join(sourceFile.getFullPath(), (i as any).source.value))
-					.replace(/\\/g, "/")
-				const targetFileRelativePath = targetFileAbsolutePath.slice(
-					projectPath.length
-				)
+				const currentFileDirectory = sourceFile
+					.getFullPath()
+					.slice(0, sourceFile.getFullPath().lastIndexOf("/"))
+				console.log(currentFileDirectory)
 
-				parsedImports.set(importName, targetFileRelativePath)
+				let finalPath = ""
+				const backSteps = relativePath.match(/\.\.\//g)
+				if (backSteps) {
+					const backStepsCount = backSteps.length
+					const currentFileDirectoryParts = currentFileDirectory.split("/")
+					const finalPathParts = currentFileDirectoryParts.slice(
+						0,
+						currentFileDirectoryParts.length - backStepsCount
+					)
+					finalPath = path
+						.join(...finalPathParts, relativePath)
+						.replaceAll("\\", "/")
+				} else {
+					finalPath = path
+						.join(currentFileDirectory, relativePath)
+						.replaceAll("\\", "/")
+				}
+
+				console.log(relativePath, finalPath)
+
+				parsedImports.set(importName, finalPath)
 			}
 		}
 
@@ -79,7 +97,7 @@ export class FileProcessor implements IFileProcessor {
 				.filter((x) => x.name)
 				.map((x) => {
 					if (parsedImports.has(x.name)) {
-						x.name = `${parsedImports.get(x.name)!}:${x.name}`
+						x.name = `${parsedImports.get(x.name)!}.ts:${x.name}`
 					}
 					return x
 				})
