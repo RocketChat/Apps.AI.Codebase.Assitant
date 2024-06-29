@@ -81,29 +81,6 @@ export class Codebase {
 		return entries.length
 	}
 
-	/**
-	 * The main function to process the files in the codebase. The function works in the following
-	 * steps:
-	 *
-	 * 1. Process the files in parallel of size `batchSize` and gather all the nodes in the `nodes` object.
-	 * 2. After gathering all the nodes from the files, it's not guranteed that they can't be more than
-	 *    `batchSize` nodes. So, we need to split the nodes into batches of `batchSize` nodes separately.
-	 * 3. Repeat Step 1 and Step 2 for all the files.
-	 *
-	 * @returns Promise<void>
-	 */
-	async process(): Promise<void> {
-		// console.log("🕒 Preparing Nodes\n")
-
-		let nodesProcessed = 0
-		for (const [index, batch] of this._batches.entries()) {
-			const [start, end] = batch
-			nodesProcessed += await this.processFilesBatch(index, start, end)
-		}
-
-		// console.log(`✅ Prepared ${nodesProcessed} nodes`)
-	}
-
 	private async processFilesBatch(
 		batchNumber: number,
 		start: number,
@@ -142,5 +119,28 @@ export class Codebase {
 		// )
 
 		return nNodesProcessed
+	}
+
+	/**
+	 * The main function to process the files in the codebase. The function works in the following
+	 * steps:
+	 *
+	 * 1. Process the files in parallel of size `batchSize` and gather all the nodes in the `nodes` object.
+	 * 2. After gathering all the nodes from the files, it's not guranteed that they can't be more than
+	 *    `batchSize` nodes. So, we need to split the nodes into batches of `batchSize` nodes separately.
+	 * 3. Repeat Step 1 and Step 2 for all the files.
+	 *
+	 * @returns Promise<void>
+	 */
+	async process(): Promise<void> {
+		// console.log("🕒 Preparing Nodes\n")
+
+		let nodesProcessed = 0
+		for (const [index, batch] of this._batches.entries()) {
+			const [start, end] = batch
+			nodesProcessed += await this.processFilesBatch(index, start, end)
+		}
+
+		// console.log(`✅ Prepared ${nodesProcessed} nodes`)
 	}
 }

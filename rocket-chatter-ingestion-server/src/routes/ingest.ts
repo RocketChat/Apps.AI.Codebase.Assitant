@@ -162,11 +162,11 @@ export async function ingestRoute(req: Request, res: Response) {
 		message: "INGESTION INITIATED",
 	})
 
-	const sessionID = uuidv4()
-
 	const startTime = Date.now()
 	{
 		let success = false
+
+		const sessionID = uuidv4()
 
 		/* Step 1: Fetch codebase to local storage */
 		success = await fetchCodebaseFromRemote(
