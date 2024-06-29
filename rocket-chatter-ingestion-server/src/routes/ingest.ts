@@ -1,7 +1,9 @@
 import { exec } from "child_process"
 import { Request, Response } from "express"
 import { existsSync, rmdirSync } from "fs"
+import { promisify } from "util"
 import { v4 as uuidv4 } from "uuid"
+
 import { insertStyleguides } from "../core/styleguides"
 import { insertDataIntoDB } from "../process/ingest/ingest"
 import { Codebase } from "../process/prepare/codebase"
@@ -14,29 +16,23 @@ import { FileProcessor } from "../process/prepare/processor/file"
  * @param remoteURL The url of directory which is to be colned using git clone
  * @returns true/false (boolean) representing the success or failure respectively
  */
-function fetchCodebaseFromRemote(dirName: string, remoteURL: string): boolean {
-	let success = true
+async function fetchCodebaseFromRemote(
+	dirName: string,
+	remoteURL: string
+): Promise<boolean> {
+	console.log(`Fetching codebase from ${remoteURL} to ${dirName}`)
+
 	try {
-		if (existsSync(dirName)) {
-			rmdirSync(dirName, { recursive: true })
-		}
+		if (existsSync(dirName)) rmdirSync(dirName, { recursive: true })
 
 		const gitCloneCommand = `git clone ${remoteURL} ${dirName}`
+		await promisify(exec)(gitCloneCommand)
 
-		exec(gitCloneCommand, (error, stdout, stderr) => {
-			success = false
-
-			if (error) {
-				console.error(`Error executing command: ${error.message}`)
-				return
-			}
-			console.log(`stdout: ${stdout}`)
-		})
-	} catch {
-		success = false
+		return true
+	} catch (e) {
+		console.error(e)
+		return false
 	}
-
-	return success
 }
 
 /**
@@ -173,10 +169,11 @@ export async function ingestRoute(req: Request, res: Response) {
 		let success = false
 
 		/* Step 1: Fetch codebase to local storage */
-		success = fetchCodebaseFromRemote(
+		success = await fetchCodebaseFromRemote(
 			sessionID,
 			"https://github.com/RocketChat/Rocket.Chat"
 		)
+
 		if (!success)
 			return await sendFailureResponse(failureURL, "FETCH_FAIL", startTime)
 
