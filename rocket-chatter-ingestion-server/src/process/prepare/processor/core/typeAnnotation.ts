@@ -34,7 +34,7 @@ export namespace TypeAnnotation {
 			}
 
 			// Handle parameters of the function
-			for (const t of (type as any).params) {
+			for (const t of (type as any).params ?? []) {
 				flatten((t as any).typeAnnotation).forEach((x) => typeArguments.add(x))
 			}
 		}

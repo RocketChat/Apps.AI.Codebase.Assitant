@@ -85,7 +85,7 @@ export namespace Interface {
 				}
 
 				// Check for the params type params (recursive)
-				for (const p of (m as any).params) {
+				for (const p of (m as any).params ?? []) {
 					node.pushUse(
 						...TypeAnnotation.flatten(p.typeAnnotation ?? []).map((t) => ({
 							name: t,
