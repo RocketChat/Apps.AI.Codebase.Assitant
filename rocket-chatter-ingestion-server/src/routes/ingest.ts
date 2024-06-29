@@ -47,7 +47,8 @@ async function startProcessJob(dirName: string): Promise<boolean> {
 
 		/* Step 1: Prepare the codebase */
 		const codebase = new Codebase(dirName, new FileProcessor(), batchSize)
-		codebase.process()
+		await codebase.process()
+		await codebase.embed()
 
 		/* Step 2: Prepare the nodes embeddings */
 		// await prepareNodesEmbeddings("data", batchSize)
