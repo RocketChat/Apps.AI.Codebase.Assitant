@@ -5,7 +5,6 @@ const openai = new OpenAI({ apiKey: OPENAI_KEY })
 
 export namespace LLM {
 	export async function generateEmbeddings(data: string): Promise<number[]> {
-		return [1, 2, 3]
 		try {
 			const content = await openai.embeddings.create({
 				input: data,
