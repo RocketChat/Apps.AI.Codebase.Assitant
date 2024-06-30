@@ -88,13 +88,21 @@ export class FileProcessor implements IFileProcessor {
 		}
 
 		// Replace import names with absolute paths
+		const nodesInFile: Record<string, string> = {} // { name: id }
+		for (const node of treeNodes) {
+			node.sourceFileRelativePath = sourceFile.getFullPath()
+			nodesInFile[node.name] = node.getID()
+		}
+
 		for (const treeNode of treeNodes) {
 			treeNode.sourceFileRelativePath = sourceFile.getFullPath()
 			treeNode.uses = treeNode.uses
 				.filter((x) => x.name)
 				.map((x) => {
-					if (parsedImports.has(x.name)) {
+					if (parsedImports.has(x.name))
 						x.name = `${parsedImports.get(x.name)!}.ts:${x.name}`
+					if (nodesInFile[x.name]) {
+						x.name = nodesInFile[x.name]
 					}
 					return x
 				})
