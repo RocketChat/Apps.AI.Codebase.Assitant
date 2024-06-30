@@ -1,7 +1,7 @@
 import { TreeNode } from "../process/prepare/processor/core/treeNode"
 import { LLM } from "./llm"
 
-export type DBNodeRelation = "IN_FILE" | "USES"
+export type DBNodeRelation = "CONTAINS" | "USES"
 
 export class DBNode {
 	id: string

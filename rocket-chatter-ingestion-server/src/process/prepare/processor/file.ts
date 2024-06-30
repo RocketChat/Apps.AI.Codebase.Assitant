@@ -64,7 +64,6 @@ export class FileProcessor implements IFileProcessor {
 				const currentFileDirectory = sourceFile
 					.getFullPath()
 					.slice(0, sourceFile.getFullPath().lastIndexOf("/"))
-				console.log(currentFileDirectory)
 
 				let finalPath = ""
 				const backSteps = relativePath.match(/\.\.\//g)
@@ -83,8 +82,6 @@ export class FileProcessor implements IFileProcessor {
 						.join(currentFileDirectory, relativePath)
 						.replaceAll("\\", "/")
 				}
-
-				console.log(relativePath, finalPath)
 
 				parsedImports.set(importName, finalPath)
 			}
