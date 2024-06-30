@@ -119,5 +119,29 @@ export class FileProcessor implements IFileProcessor {
 			const dbNode = DBNode.fromTreeNode(treeNode)
 			nodesRef[dbNode.id] = dbNode
 		}
+
+		// Create file node
+		const fileNode = new DBNode({
+			id: sourceFile.getFullPath(),
+			name: sourceFile.getFullPath(),
+			type: "File",
+
+			code: fileContent,
+
+			filePath: sourceFile.getFullPath(),
+			relations:
+				[] ??
+				treeNodes.map((x) => ({
+					target: x.getID(),
+					relation: "CONTAINS",
+				})),
+
+			nameEmbeddings: [],
+			codeEmbeddings: [],
+
+			isFile: true,
+			descriptor: "Node",
+		})
+		nodesRef[fileNode.id] = fileNode
 	}
 }
