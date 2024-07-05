@@ -113,13 +113,13 @@ export class Codebase {
 			let nodes: Record<string, DBNode> = {}
 
 			/* Step 1 */
-			// try {
-			const files = this._files.slice(start, end)
-			const jobs = files.map((x) => this._fileProcessor.process(x, nodes))
-			await Promise.all(jobs)
-			// } catch {
-			// 	console.error(`Error in processing ${start}-${end} files`)
-			// }
+			try {
+				const files = this._files.slice(start, end)
+				const jobs = files.map((x) => this._fileProcessor.process(x, nodes))
+				await Promise.all(jobs)
+			} catch {
+				console.error(`Error in processing ${start}-${end} files`)
+			}
 
 			/* Step 2 */
 			this.writeNodesToFile(nodes, `batch-${batchNumber}.json`)

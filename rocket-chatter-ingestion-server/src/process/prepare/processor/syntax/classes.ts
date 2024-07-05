@@ -66,8 +66,6 @@ export namespace Classes {
 				name: node.callee.name,
 				type: "class",
 			})
-		} else {
-			// console.log("Unknown call:", e.expression)
 		}
 
 		if (node.arguments) {
