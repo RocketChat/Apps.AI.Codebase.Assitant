@@ -1,36 +1,38 @@
 {
-  "main": "src/main.ts",
-  "scripts": {
-    "start": "tsx ./src/main.ts",
-    "dev": "clear && tsx ./src/test.ts"
-  },
-  "devDependencies": {
-    "@babel/parser": "^7.24.7",
-    "@huggingface/inference": "^2.6.6",
-    "@types/cli-progress": "^3.11.5",
-    "@types/cors": "^2.8.17",
-    "@types/express": "^4.17.21",
-    "@types/node": "^20.11.27",
-    "@types/uuid": "^10.0.0",
-    "nodemon": "^3.1.0",
-    "ts-node": "^10.9.2",
-    "tsx": "^4.19.0",
-    "@types/jsdom": "^21.1.7",
-    "typescript": "^5.4.2"
-  },
-  "dependencies": {
-    "ast-types": "^0.14.2",
-    "cli-progress": "^3.12.0",
-    "cors": "^2.8.5",
-    "dotenv": "^16.4.5",
-    "express": "^4.19.1",
-    "glob": "^10.4.2",
-    "jsdom": "^25.0.0",
-    "nanoid": "^5.0.7",
-    "neo4j-driver": "4.4.0",
-    "openai": "^4.29.2",
-    "puppeteer": "^23.3.0",
-    "recast": "^0.23.9",
-    "uuid": "^10.0.0"
-  }
+   "main": "src/main.ts",
+   "scripts": {
+      "start": "clear && tsx ./src/main.ts",
+      "dev": "clear && tsx ./src/test.ts",
+      "pretty": "prettier --config .prettierrc --write ./src/*"
+   },
+   "devDependencies": {
+      "@babel/parser": "^7.24.7",
+      "@huggingface/inference": "^2.6.6",
+      "@types/cli-progress": "^3.11.5",
+      "@types/cors": "^2.8.17",
+      "@types/express": "^4.17.21",
+      "@types/jsdom": "^21.1.7",
+      "@types/node": "^20.11.27",
+      "@types/uuid": "^10.0.0",
+      "nodemon": "^3.1.0",
+      "prettier": "^3.3.3",
+      "ts-node": "^10.9.2",
+      "tsx": "^4.19.0",
+      "typescript": "^5.4.2"
+   },
+   "dependencies": {
+      "ast-types": "^0.14.2",
+      "cli-progress": "^3.12.0",
+      "cors": "^2.8.5",
+      "dotenv": "^16.4.5",
+      "express": "^4.19.1",
+      "glob": "^10.4.2",
+      "jsdom": "^25.0.0",
+      "nanoid": "^5.0.7",
+      "neo4j-driver": "4.4.0",
+      "openai": "^4.29.2",
+      "puppeteer": "^23.3.0",
+      "recast": "^0.23.9",
+      "uuid": "^10.0.0"
+   }
 }

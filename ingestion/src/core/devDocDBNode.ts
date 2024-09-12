@@ -1,16 +1,16 @@
 export type DevDocDBNodeRelationType = "CONTAINS"
 export type DevDocDBNodeRelation = {
-	target: string
-	relation: DevDocDBNodeRelationType
+   target: string
+   relation: DevDocDBNodeRelationType
 }
 
 export type DevDocDBNode = {
-	id: string
-	relations: DevDocDBNodeRelation[]
+   id: string
+   relations: DevDocDBNodeRelation[]
 
-	url: string
-	element: string
+   url: string
+   element: string
 
-	content: string
-	contentEmbeddings: number[]
+   content: string
+   contentEmbeddings: number[]
 }

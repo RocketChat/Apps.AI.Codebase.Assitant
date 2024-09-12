@@ -1,19 +1,19 @@
 export enum SourceFileType {
-	// TypeScript
-	TypeScript,
-	TypeScriptReact,
+   // TypeScript
+   TypeScript,
+   TypeScriptReact,
 
-	// JavaScript
-	JavaScript,
-	JavaScriptReact,
+   // JavaScript
+   JavaScript,
+   JavaScriptReact,
 
-	// Others
-	JSON,
+   // Others
+   JSON,
 }
 
 export interface ISourceFile {
-	read(): string
+   read(): string
 
-	getProjectPath(): string
-	getFullPath(): string
+   getProjectPath(): string
+   getFullPath(): string
 }
