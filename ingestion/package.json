@@ -1,8 +1,9 @@
 {
    "main": "src/main.ts",
+   "type": "module",
    "scripts": {
       "start": "clear && tsx ./src/main.ts",
-      "dev": "clear && tsx ./src/test.ts",
+      "dev": "node scripts/dev.js",
       "pretty": "prettier --config .prettierrc --write ./src/*"
    },
    "devDependencies": {
